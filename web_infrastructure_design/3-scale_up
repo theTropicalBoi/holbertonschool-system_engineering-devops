@@ -1,0 +1,49 @@
+                User Browser
+                    |
+                    v
+        +-------------------------+
+        |   DNS -> www.foobar.com |
+        +-------------------------+
+                    |
+            (A Record → VIP)
+                    |
+        +------------------------+
+        | HAProxy Load Balancer |
+        | [Active-Active Setup] |
+        +------------------------+
+           /              \
+          /                \
+         v                  v
++----------------+   +------------------+
+|   Web Server   |   | Application Server |
+|   (Nginx)      |   | (PHP / Node.js)   |
++----------------+   +------------------+
+                            |
+                            v
+                  +-------------------+
+                  |   Database Server |
+                  |     (MySQL)       |
+                  +-------------------+
+
+
+What is a Web Server?
+A web server like Nginx or Apache handles:
+
+Receiving HTTP/HTTPS requests
+
+Serving static content (HTML, CSS, JS, images)
+
+Acting as a reverse proxy to the application server
+
+Think of it as the “front door” of your website.
+
+What is an Application Server?
+An application server runs your backend code:
+
+Executes dynamic logic (PHP, Node.js, Django, etc.)
+
+Handles routing, API endpoints, session management
+
+Communicates with the database
+
+Think of it as the “brain” of your application.

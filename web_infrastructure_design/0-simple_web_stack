@@ -1,0 +1,69 @@
++---------------------+
+|     User Browser    |
+| www.foobar.com      |
++---------------------+
+          |
+          v
++---------------------+     DNS (A record)
+|     DNS Resolver     |  ----------------->  foobar.com → 8.8.8.8
++---------------------+                        www.foobar.com → 8.8.8.8
+          |
+          v
++----------------------------------------------------+
+|                    Single Server (8.8.8.8)         |
+|                                                    |
+|  +-------------+   +------------------+            |
+|  |   Nginx     |-->| Application      |            |
+|  | (Web Server)|   | Server (PHP, etc)|            |
+|  +-------------+   +------------------+            |
+|         |                    |                     |
+|         v                    v                     |
+|     Static Files          Application Files        |
+|                          (e.g., index.php)         |
+|                                |                   |
+|                                v                   |
+|                        +--------------+            |
+|                        |   MySQL DB   |            |
+|                        +--------------+            |
++----------------------------------------------------+
+
+
+
+What is a server?
+A server is a physical or virtual computer that provides services or resources (like websites) over a network. In this setup, it runs software to handle web traffic and store the site’s data.
+
+What is the role of the domain name?
+The domain name (foobar.com) provides a human-readable address to access the server, instead of using the IP (8.8.8.8). It’s easier to remember.
+
+What type of DNS record is www in www.foobar.com?
+The www is a DNS A record (Address record) that maps the subdomain www to the IP 8.8.8.8.
+
+What is the role of the web server (Nginx)?
+Nginx handles HTTP(S) requests from clients. It:
+
+Serves static content (HTML, CSS, JS).
+
+Forwards dynamic requests (like .php) to the application server.
+
+Handles things like load balancing, SSL termination, and URL rewriting (though we’re not using those in this simple setup).
+
+What is the role of the application server?
+The application server executes your code. For example, with PHP:
+
+When a user visits /profile.php, Nginx passes the request to PHP-FPM.
+
+PHP interprets the script, interacts with the database, and returns HTML to Nginx.
+
+What is the role of the database?
+MySQL stores persistent data like:
+
+User accounts
+
+Orders
+
+Blog posts
+
+Any data your application uses
+
+What is the server using to communicate with the user's computer?
+The server communicates using HTTP or HTTPS protocols over TCP/IP. The user’s browser sends HTTP requests, and the server responds with HTTP responses.

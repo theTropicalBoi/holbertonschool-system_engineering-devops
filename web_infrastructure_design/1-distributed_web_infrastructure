@@ -1,0 +1,58 @@
+User Browser
+    |
+    v
++------------------------+
+|  www.foobar.com (DNS)  |
+|  -> A Record -> LB IP  |
++------------------------+
+            |
+            v
+    +------------------+         Load Balancer (HAProxy)
+    |   Load Balancer  |-------> Round-Robin to App Servers
+    |     (HAProxy)    |              
+    +------------------+
+        /         \
+       /           \
+      v             v
++----------------+  +----------------+
+|  App Server 1  |  |  App Server 2  |
+| +------------+ |  | +------------+ |
+| |   Nginx    | |  | |   Nginx    | |
+| | (Web Server)| |  | | (Web Server)| |
+| +------------+ |  | +------------+ |
+| |  App Code  | |  | |  App Code  | |
+| | (PHP/Python)| |  | | (PHP/Python)| |
+| +------------+ |  | +------------+ |
+|     |             |     |          
+|     v             |     v          
+| +-------------+   | +-------------+  
+| | MySQL Replica|  | | MySQL Primary|
+| +-------------+   | +-------------+  
++----------------+  +----------------+
+
+
+1. Load Balancer (HAProxy)
+Why? Distributes traffic across multiple servers to:
+
+Prevent overload on a single server
+
+Improve uptime and responsiveness
+
+Distribution Algorithm:
+Round-Robin: Requests are sent to backend servers in a cyclic order.
+
+Req 1 → App Server 1
+
+Req 2 → App Server 2
+
+Req 3 → App Server 1 ...
+
+Ensures fair and simple load distribution.
+
+Active-Active Configuration:
+
+Both app servers are active and handling traffic simultaneously.
+
+Ideal for high availability and scalability.
+
+Contrast with Active-Passive, where one server is idle until the active one fails.

@@ -1,0 +1,51 @@
+User Browser (HTTPS Request to www.foobar.com)
+    |
+    v
++-----------------------------+
+|      DNS (A Record)        |
+| www.foobar.com → LB IP     |
++-----------------------------+
+             |
+             v
++--------------------------------------+
+|       Load Balancer (HAProxy)       |
+|  - SSL Termination (Let's Encrypt)  |
+|  - HTTPS only (port 443)            |
+|  - Firewall 1 (allow 443 only)      |
++--------------------------------------+
+             |
+     Round-Robin Load Balancing
+        /                   \
+       /                     \
+      v                       v
++--------------------+  +--------------------+
+|   App Server 1     |  |   App Server 2     |
+| - Nginx + PHP      |  | - Nginx + PHP      |
+| - App Code         |  | - App Code         |
+| - MySQL Replica    |  | - MySQL Primary    |
+| - Monitoring Client|  | - Monitoring Client|
+| - Firewall 2       |  | - Firewall 3       |
++--------------------+  +--------------------+
+
+
+1. Firewalls (3)
+Why? Firewalls control incoming and outgoing network traffic, adding an essential layer of defense against unauthorized access.
+
+Placement:
+
+Firewall 1 (Load Balancer): Allows only HTTPS (port 443).
+
+Firewall 2 & 3 (App Servers):
+
+Allow traffic only from the load balancer and monitoring services.
+
+Restrict database ports (3306) to internal IPs only.
+
+2. SSL Certificate (HTTPS via Let's Encrypt)
+Why?
+
+Encrypts communication between the user and your website.
+
+Prevents man-in-the-middle attacks and protects user privacy.
+
+Served at: Load balancer (HAProxy) with automatic renewal via Let's Encrypt.
